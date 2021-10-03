@@ -4,21 +4,24 @@ RepositoryX
 ViewModelsX
 ResourceX
 ModelsX
-Coroutines
-LiveData
+CoroutinesX
+LiveDataX
 
-XMLs
+XMLsX
 
-ListFragments, RecyclerView, Fragment
-Observables
+ListFragmentsX, RecyclerViewX
+ObservablesX
+
+RecyclerView onClick
+Create SharedPrefs for apiKey
+Put strings into strings.xml
+Location Services for Current Weather
+Comments
+Dagger
 
 Unit Tests
 MockK, Robolectric, MockWebServer
 Espresso Tests
 
-Location Services for Current Weather
-
-BottomSheet with current forecast
-Dagger
 Navigation
 Special meteor animation

@@ -42,7 +42,7 @@ data class DailyForecast(
     var degree: Double,
     var gust: Double,
     var clouds: Int,
-    var pop: Int
+    var pop: Double
 )
 
 data class Temperature(
@@ -87,7 +87,9 @@ data class CurrentWeather(
 data class Clouds(var all: Int)
 
 data class Main(
+    @SerializedName("temp")
     var temperature: Double,
+    @SerializedName("feels_like")
     var feelsLike: Double,
     var tempMin: Double,
     var tempMax: Double,

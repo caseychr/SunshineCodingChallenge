@@ -30,4 +30,4 @@ object NetworkService {
     }
 }
 
-private const val BASE_URL = "https://api.openweathermap.org"
+private const val BASE_URL = "https://api.openweathermap.org" // shared prefs

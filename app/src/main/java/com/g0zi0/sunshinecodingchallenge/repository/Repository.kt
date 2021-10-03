@@ -8,11 +8,11 @@ import com.g0zi0.sunshinecodingchallenge.model.Forecasts
 class Repository(private val weatherApi: WeatherApi) {
 
     suspend fun getForecasts(): Resource<Forecasts> {
-        return loadApiResource { weatherApi.getForecasts("apiKey") }
+        return loadApiResource { weatherApi.getForecasts() }
     }
 
     suspend fun getCurrentWeather(lat: String, lon: String): Resource<CurrentWeather> {
-        return loadApiResource { weatherApi.getCurrentWeather(lat, lon, "apiKey") }
+        return loadApiResource { weatherApi.getCurrentWeather() }
     }
 
     suspend fun <T> loadApiResource(loader: suspend () -> T): Resource<T> {
