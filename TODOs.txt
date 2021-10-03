@@ -1,14 +1,16 @@
 Build out shells:
-Retrofit
-Repository
-ViewModels
-Resource
-Models
+RetrofitX
+RepositoryX
+ViewModelsX
+ResourceX
+ModelsX
 Coroutines
+LiveData
 
 XMLs
 
 ListFragments, RecyclerView, Fragment
+Observables
 
 Unit Tests
 MockK, Robolectric, MockWebServer
@@ -19,3 +21,4 @@ Location Services for Current Weather
 BottomSheet with current forecast
 Dagger
 Navigation
+Special meteor animation
