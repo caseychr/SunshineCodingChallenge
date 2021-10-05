@@ -1,8 +1,8 @@
-package com.g0zi0.sunshinecodingchallenge
+package com.g0zi0.sunshinecodingchallenge.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.g0zi0.sunshinecodingchallenge.ui.ForecastFragment
+import com.g0zi0.sunshinecodingchallenge.R
 
 class ForecastActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

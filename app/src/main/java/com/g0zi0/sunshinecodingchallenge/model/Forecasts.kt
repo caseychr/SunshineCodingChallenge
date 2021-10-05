@@ -39,6 +39,7 @@ data class DailyForecast(
     @SerializedName("weather")
     var weather: List<Weather>,
     var speed: Double,
+    @SerializedName("deg")
     var degree: Double,
     var gust: Double,
     var clouds: Int,
