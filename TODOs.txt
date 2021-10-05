@@ -12,9 +12,16 @@ XMLsX
 ListFragmentsX, RecyclerViewX
 ObservablesX
 
-RecyclerView onClick
+RecyclerView onClickX
+Refresh buttonX
+Refresh animationsX
+Up/down animationsX
+Transparent in animation for current weatherX
 Create SharedPrefs for apiKey
-Put strings into strings.xml
+Put strings into strings.xmlX
+build styles
+Navigation
+
 Location Services for Current Weather
 Comments
 Dagger
@@ -22,6 +29,3 @@ Dagger
 Unit Tests
 MockK, Robolectric, MockWebServer
 Espresso Tests
-
-Navigation
-Special meteor animation

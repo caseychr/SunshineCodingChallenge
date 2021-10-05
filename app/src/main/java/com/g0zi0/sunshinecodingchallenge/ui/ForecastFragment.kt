@@ -1,5 +1,6 @@
 package com.g0zi0.sunshinecodingchallenge.ui
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.g0zi0.sunshinecodingchallenge.R
-import com.g0zi0.sunshinecodingchallenge.Resource
-import com.g0zi0.sunshinecodingchallenge.ResourceViewObserver
+import com.g0zi0.sunshinecodingchallenge.*
 import com.g0zi0.sunshinecodingchallenge.model.CurrentWeather
 import com.g0zi0.sunshinecodingchallenge.model.DailyForecast
 import com.g0zi0.sunshinecodingchallenge.model.Forecasts
 import com.g0zi0.sunshinecodingchallenge.viewmodel.ForecastViewModel
 
-class ForecastFragment: Fragment(), ForecastAdapter.OnItemClick {
+class ForecastFragment: Fragment() {
 
     companion object {
         fun newInstance(): ForecastFragment {
@@ -31,6 +30,7 @@ class ForecastFragment: Fragment(), ForecastAdapter.OnItemClick {
     lateinit var degreeTextView: TextView
     lateinit var feelsLikeTextView: TextView
     lateinit var recyclerView: RecyclerView
+    lateinit var refreshImageView: ImageView
 
     private val viewModel by viewModels<ForecastViewModel>()
     private lateinit var forecastAdapter: ForecastAdapter
@@ -47,6 +47,7 @@ class ForecastFragment: Fragment(), ForecastAdapter.OnItemClick {
         degreeTextView = view.findViewById(R.id.degreesTextView)
         feelsLikeTextView = view.findViewById(R.id.feelsLikeTempTextView)
         recyclerView = view.findViewById(R.id.forecastRecyclerView)
+        refreshImageView = view.findViewById(R.id.refreshImageView)
         onSubscribe()
         viewModel.getForecasts()
     }
@@ -86,17 +87,31 @@ class ForecastFragment: Fragment(), ForecastAdapter.OnItemClick {
     }
 
     private fun initRecyclerView(forecasts: List<DailyForecast>) {
-        forecastAdapter = ForecastAdapter(forecasts, this@ForecastFragment)
+        forecastAdapter = ForecastAdapter(forecasts)
         recyclerView.layoutManager = LinearLayoutManager(this@ForecastFragment.context)
         recyclerView.adapter = forecastAdapter
     }
 
     private fun initCurrentWeatherView(currentWeather: CurrentWeather) {
+        /*cityTextView.fadeInText()
+        weatherImageView.fadeInText()
+        weatherTextView.fadeInText()
+        degreeTextView.fadeInText()
+        feelsLikeTextView.fadeInText()*/
         cityTextView.text //TODO location is not coming through in call so figure this out
         weatherImageView.setImageResource(loadWeatherIcon(currentWeather.weather[0].icon))
         weatherTextView.text = currentWeather.weather[0].description.capitalizeFirstLetters()
-        degreeTextView.text = "${currentWeather.main.temperature.toInt()}°" // TODO pull from strings
-        feelsLikeTextView.text = "Feels like ${currentWeather.main.feelsLike.toInt()}°" // TODO pull from strings
+        degreeTextView.text = getString(R.string.degree, currentWeather.main.temperature.toInt().toString())
+        feelsLikeTextView.text = getString(R.string.feelsLikeCurrentWeatherDegree, currentWeather.main.feelsLike.toInt().toString())
+        refreshImageView.setOnClickListener {
+            refreshImageView.rotateButton()
+            /*cityTextView.visibility = View.INVISIBLE
+            weatherImageView.visibility = View.INVISIBLE
+            weatherTextView.visibility = View.INVISIBLE
+            degreeTextView.visibility = View.INVISIBLE
+            feelsLikeTextView.visibility = View.INVISIBLE*/
+            viewModel.getCurrentWeather("", "")
+        }
     }
 
     private fun onLoading(isLoading: Boolean) {
@@ -133,18 +148,4 @@ class ForecastFragment: Fragment(), ForecastAdapter.OnItemClick {
         return res
     }
 
-    fun String.capitalizeFirstLetters(): String { //TODO belongs in extension functions class
-        var string = this
-        val words = this.split(" ").toMutableList()
-        var response = ""
-        for (word in words) {
-            response += word.capitalize()+" "
-        }
-        response = response.trim()
-        return response
-    }
-
-    override fun onClick(id: Int) {
-        TODO("Not yet implemented")
-    }
 }
