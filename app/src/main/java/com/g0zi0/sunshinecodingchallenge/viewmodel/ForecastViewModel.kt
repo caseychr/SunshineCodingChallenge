@@ -19,8 +19,8 @@ class ForecastViewModel(application: Application): BaseViewModel(application) {
         currentWeatherLiveData.loadResource { repository.getCurrentWeather(lat, lon) }
     }
 
-    fun getForecasts() {
-        forecastsLiveData.loadResource { repository.getForecasts() }
+    fun getForecasts(lat: String, lon: String) {
+        forecastsLiveData.loadResource { repository.getForecasts(lat, lon) }
     }
 
 }

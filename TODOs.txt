@@ -1,6 +1,3 @@
 
-
-Navigation bar
 Testing - Unit Tests, MockK, Robolectric, MockWebServer, Espresso
-Fix Location Services for Current Weather
 Comments

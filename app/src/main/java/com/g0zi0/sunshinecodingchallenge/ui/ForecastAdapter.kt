@@ -16,6 +16,7 @@ import com.g0zi0.sunshinecodingchallenge.model.DailyForecast
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<ForecastAdapter.ViewHolder>() {
 
     lateinit var context: Context
@@ -29,6 +30,7 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
         var humidity: TextView = this.itemView.findViewById(R.id.humidityTextView)
         var pressure: TextView = this.itemView.findViewById(R.id.pressureTextView)
         var wind: TextView = this.itemView.findViewById(R.id.windTextView)
+        var bottomBorder: ImageView = this.itemView.findViewById(R.id.bottomBorderImageView)
         var hiddenLayout: ConstraintLayout = this.itemView.findViewById(R.id.hiddenLayout)
     }
 
@@ -48,11 +50,29 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
             day.text = dayOfWeek(forecasts[position].dt.toLong())
             weatherImageView.setImageResource(loadWeatherIcon(forecasts[position].weather[0].icon))
             weather.text = forecasts[position].weather[0].main
-            maxTemperature.text = context.getString(R.string.degree, forecasts[position].temperature.max.toInt().toString())
-            minTemperature.text = context.getString(R.string.degree, forecasts[position].temperature.min.toInt().toString())
-            humidity.text = context.getString(R.string.humidity, forecasts[position].humidity.toInt().toString())
-            pressure.text = context.getString(R.string.pressure, forecasts[position].pressure.toInt().toString())
-            wind.text = context.getString(R.string.wind, forecasts[position].speed.toInt().toString(), getDirectionFromDegrees(forecasts[position].degree))
+            maxTemperature.text = context.getString(
+                R.string.degree,
+                forecasts[position].temperature.max.toInt().toString()
+            )
+            minTemperature.text = context.getString(
+                R.string.degree,
+                forecasts[position].temperature.min.toInt().toString()
+            )
+            humidity.text = context.getString(
+                R.string.humidity,
+                forecasts[position].humidity.toInt().toString()
+            )
+            pressure.text = context.getString(
+                R.string.pressure,
+                forecasts[position].pressure.toInt().toString()
+            )
+            wind.text = context.getString(
+                R.string.wind,
+                forecasts[position].speed.toInt().toString(),
+                getDirectionFromDegrees(
+                    forecasts[position].degree
+                )
+            )
             itemView.setOnClickListener {
                 if (hiddenLayout.isVisible) {
                     collapse(hiddenLayout)

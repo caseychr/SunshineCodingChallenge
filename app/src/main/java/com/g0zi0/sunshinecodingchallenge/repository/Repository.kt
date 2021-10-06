@@ -16,12 +16,12 @@ class Repository(val context: Context, private val weatherApi: WeatherApi,
         sharedPreferences.edit().putString(units, "imperial").apply()
     }
 
-    suspend fun getForecasts(): Resource<Forecasts> {
-        return loadApiResource { weatherApi.getForecasts("Atlanta", "json", 10, sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
+    suspend fun getForecasts(lat: String, lon: String): Resource<Forecasts> {
+        return loadApiResource { weatherApi.getForecasts(lat, lon, 10, sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
     }
 
     suspend fun getCurrentWeather(lat: String, lon: String): Resource<CurrentWeather> {
-        return loadApiResource { weatherApi.getCurrentWeather("0", "0", sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
+        return loadApiResource { weatherApi.getCurrentWeather(lat, lon, sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
     }
 
     suspend fun <T> loadApiResource(loader: suspend () -> T): Resource<T> {
