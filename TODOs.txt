@@ -1,31 +1,6 @@
-Build out shells:
-RetrofitX
-RepositoryX
-ViewModelsX
-ResourceX
-ModelsX
-CoroutinesX
-LiveDataX
 
-XMLsX
 
-ListFragmentsX, RecyclerViewX
-ObservablesX
-
-RecyclerView onClickX
-Refresh buttonX
-Refresh animationsX
-Up/down animationsX
-Transparent in animation for current weatherX
-Create SharedPrefs for apiKey
-Put strings into strings.xmlX
-build styles
-Navigation
-
-Location Services for Current Weather
+Navigation bar
+Testing - Unit Tests, MockK, Robolectric, MockWebServer, Espresso
+Fix Location Services for Current Weather
 Comments
-Dagger
-
-Unit Tests
-MockK, Robolectric, MockWebServer
-Espresso Tests

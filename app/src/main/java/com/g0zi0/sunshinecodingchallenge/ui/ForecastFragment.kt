@@ -1,12 +1,15 @@
 package com.g0zi0.sunshinecodingchallenge.ui
 
+import android.Manifest
 import android.animation.ObjectAnimator
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,8 @@ import com.g0zi0.sunshinecodingchallenge.model.CurrentWeather
 import com.g0zi0.sunshinecodingchallenge.model.DailyForecast
 import com.g0zi0.sunshinecodingchallenge.model.Forecasts
 import com.g0zi0.sunshinecodingchallenge.viewmodel.ForecastViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class ForecastFragment: Fragment() {
 
@@ -32,10 +37,16 @@ class ForecastFragment: Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var refreshImageView: ImageView
 
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    var latitude: Double? = null
+    var longitude: Double? = null
+
     private val viewModel by viewModels<ForecastViewModel>()
     private lateinit var forecastAdapter: ForecastAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@ForecastFragment.requireContext())
+        lastLocationCall()
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
@@ -64,26 +75,17 @@ class ForecastFragment: Fragment() {
             initCurrentWeatherView(data)
         }
 
-        override fun showLoading(isLoading: Boolean) {
-        }
-
-        override fun showError(throwable: Throwable) {
-        }
+        override fun showLoading(isLoading: Boolean) { onLoading(isLoading) }
+        override fun showError(throwable: Throwable) { onError(throwable.localizedMessage) }
     }
 
     private val getForecastWeatherResourceView = object : Resource.ResourceView<Forecasts> {
         override fun showData(data: Forecasts) {
             initRecyclerView(data.dailyForecast)
-            viewModel.getCurrentWeather("", "")
+            viewModel.getCurrentWeather(latitude.toString(), longitude.toString())
         }
-
-        override fun showLoading(isLoading: Boolean) {
-
-        }
-
-        override fun showError(throwable: Throwable) {
-
-        }
+        override fun showLoading(isLoading: Boolean) { onLoading(isLoading) }
+        override fun showError(throwable: Throwable) { onError(throwable.localizedMessage) }
     }
 
     private fun initRecyclerView(forecasts: List<DailyForecast>) {
@@ -93,11 +95,11 @@ class ForecastFragment: Fragment() {
     }
 
     private fun initCurrentWeatherView(currentWeather: CurrentWeather) {
-        /*cityTextView.fadeInText()
+        cityTextView.fadeInText()
         weatherImageView.fadeInText()
         weatherTextView.fadeInText()
         degreeTextView.fadeInText()
-        feelsLikeTextView.fadeInText()*/
+        feelsLikeTextView.fadeInText()
         cityTextView.text //TODO location is not coming through in call so figure this out
         weatherImageView.setImageResource(loadWeatherIcon(currentWeather.weather[0].icon))
         weatherTextView.text = currentWeather.weather[0].description.capitalizeFirstLetters()
@@ -105,12 +107,7 @@ class ForecastFragment: Fragment() {
         feelsLikeTextView.text = getString(R.string.feelsLikeCurrentWeatherDegree, currentWeather.main.feelsLike.toInt().toString())
         refreshImageView.setOnClickListener {
             refreshImageView.rotateButton()
-            /*cityTextView.visibility = View.INVISIBLE
-            weatherImageView.visibility = View.INVISIBLE
-            weatherTextView.visibility = View.INVISIBLE
-            degreeTextView.visibility = View.INVISIBLE
-            feelsLikeTextView.visibility = View.INVISIBLE*/
-            viewModel.getCurrentWeather("", "")
+            viewModel.getCurrentWeather(latitude.toString(), longitude.toString())
         }
     }
 
@@ -146,6 +143,23 @@ class ForecastFragment: Fragment() {
             else -> R.drawable.ic_weather_cloudy_white
         }
         return res
+    }
+
+    private fun lastLocationCall() {
+        if (ActivityCompat.checkSelfPermission(
+                this@ForecastFragment.requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this@ForecastFragment.requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener {location ->
+            latitude = location?.latitude
+            longitude = location?.longitude
+        }
     }
 
 }

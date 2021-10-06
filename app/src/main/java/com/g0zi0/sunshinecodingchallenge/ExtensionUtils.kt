@@ -1,7 +1,5 @@
 package com.g0zi0.sunshinecodingchallenge
 
-import android.animation.Animator
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 import android.widget.ImageView
@@ -17,29 +15,11 @@ fun String.capitalizeFirstLetters(): String { //TODO belongs in extension functi
 }
 
 fun View.fadeInText() {
-    var view = this
-    val animatorSet = AnimatorSet()
-    animatorSet.addListener(object : Animator.AnimatorListener {
-        override fun onAnimationStart(p0: Animator?) {
-
-        }
-
-        override fun onAnimationEnd(p0: Animator?) {
-            view.visibility = View.VISIBLE
-        }
-        override fun onAnimationCancel(p0: Animator?) {
-
-        }
-        override fun onAnimationRepeat(p0: Animator?) {
-
-        }
-
-    })
-    val textAnimator = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
-    textAnimator.duration = 1500L
-    //textAnimator.start()
-    animatorSet.play(textAnimator)
-    animatorSet.start()
+    this.apply {
+        alpha = 0f
+        visibility = View.VISIBLE
+        animate().alpha(1f).duration = 2000L
+    }
 }
 
 fun ImageView.rotateButton() {

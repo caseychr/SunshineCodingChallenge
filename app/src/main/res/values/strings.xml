@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SunshineCodingChallenge</string>
+    <string name="app_name">Sunshine</string>
 
     <!--fragment-->
     <string name="degree">%1$s°</string>
