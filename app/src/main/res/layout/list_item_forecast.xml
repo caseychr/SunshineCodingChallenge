@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:paddingStart="12dp"
         android:paddingTop="16dp"
-        android:textSize="18sp"
         android:fontFamily="@font/opensans_bold"
-        android:textColor="#003459"
+        android:textColor="@color/bold_blue"
+        style="@style/weatherItem"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/weatherImageView"/>
 
@@ -33,11 +33,10 @@
         android:text="Cloudy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        style="@style/weatherItem"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="12dp"
         android:layout_marginStart="12dp"
-        android:fontFamily="@font/opensans_regular"
         app:layout_constraintTop_toBottomOf="@id/dayTextView"
         app:layout_constraintStart_toEndOf="@id/weatherImageView"/>
 
@@ -46,11 +45,10 @@
         android:text="77\u00B0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#003459"
-        android:textSize="18sp"
+        android:textColor="@color/bold_blue"
+        style="@style/weatherItem"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
-        android:fontFamily="@font/opensans_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -62,8 +60,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
-        android:textSize="18sp"
-        android:fontFamily="@font/opensans_regular"
+        style="@style/weatherItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/maxDegreesTextView"/>
 
@@ -81,8 +78,7 @@
             android:id="@+id/humidityTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_regular"
-            android:textSize="18sp"
+            style="@style/weatherItem"
             android:text="Humidity: 97"
             app:layout_constraintTop_toTopOf="@id/hiddenLayout"
             app:layout_constraintStart_toStartOf="@id/hiddenLayout"
@@ -93,8 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pressure: 97"
-            android:textSize="18sp"
-            android:fontFamily="@font/opensans_regular"
+            style="@style/weatherItem"
             app:layout_constraintStart_toStartOf="@id/hiddenLayout"
             app:layout_constraintBottom_toTopOf="@id/windTextView"/>
 
@@ -103,9 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wind: 97"
+            style="@style/weatherItem"
             android:paddingBottom="12dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/opensans_regular"
             app:layout_constraintStart_toStartOf="@id/hiddenLayout"
             app:layout_constraintBottom_toBottomOf="@id/hiddenLayout"/>
 

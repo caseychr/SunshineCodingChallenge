@@ -7,9 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.ForecastActivity">
 
+    <include android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

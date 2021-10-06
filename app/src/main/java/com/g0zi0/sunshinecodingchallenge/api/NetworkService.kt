@@ -12,6 +12,9 @@ object NetworkService {
         return buildRetrofit().create(WeatherApi::class.java)
     }
 
+    /**
+     * Builds Retrofit instance with CoroutineCallAdapter and GsonConverter for Modeling
+     */
     private fun buildRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -21,6 +24,9 @@ object NetworkService {
             .build()
     }
 
+    /**
+     * Builds Http client for logging
+     */
     private fun buildClient(): OkHttpClient {
         val logging  = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -30,4 +36,4 @@ object NetworkService {
     }
 }
 
-private const val BASE_URL = "https://api.openweathermap.org" // shared prefs
+private const val BASE_URL = "https://api.openweathermap.org"
