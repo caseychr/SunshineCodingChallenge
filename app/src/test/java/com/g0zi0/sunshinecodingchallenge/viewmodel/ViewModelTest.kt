@@ -13,8 +13,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE, sdk = [28])
 class ViewModelTest {
 
     private val repository = mockk<Repository>()
@@ -52,7 +54,7 @@ class ViewModelTest {
     @Test
     fun `getForecasts returns success`() {
         runBlocking {
-            coEvery { repository.getForecasts() } returns Resource.Success(fakeForecasts)
+            coEvery { repository.getForecasts("lat", "lon") } returns Resource.Success(fakeForecasts)
 
             viewModel.getCurrentWeather("lat", "lon")
 
@@ -63,7 +65,7 @@ class ViewModelTest {
     @Test
     fun `getForecasts returns error`() {
         runBlocking {
-            coEvery { repository.getForecasts() } returns Resource.Error(Throwable(""))
+            coEvery { repository.getForecasts("lat", "lon") } returns Resource.Error(Throwable(""))
 
             viewModel.getCurrentWeather("lat", "lon")
 
