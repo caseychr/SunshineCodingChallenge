@@ -6,8 +6,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * singleton Retrofit service
+ */
 object NetworkService {
 
+    /**
+     * callable function to instantiate weatherApi class
+     */
     fun service(): WeatherApi {
         return buildRetrofit().create(WeatherApi::class.java)
     }

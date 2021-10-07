@@ -15,15 +15,15 @@ class ForecastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE)
-
         fragment = ForecastFragment.newInstance()
-
         supportFragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, fragment).commit()
     }
 
+    /**
+     * override for location permissions
+     * invoke onRequestPermissionResult in fragment
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

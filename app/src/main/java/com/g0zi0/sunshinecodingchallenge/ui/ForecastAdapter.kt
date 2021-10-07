@@ -77,7 +77,7 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
                 if (hiddenLayout.isVisible) {
                     collapse(hiddenLayout)
                 } else {
-                    expandAction(hiddenLayout)
+                    expand(hiddenLayout)
                 }
             }
         }
@@ -87,12 +87,19 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
         return forecasts.size
     }
 
+    /**
+     * @param millis - datetime in millis
+     * return day of the week
+     */
     private fun dayOfWeek(millis: Long): String {
         val sdf = SimpleDateFormat("EEEE")
         val dateFormat = Date(millis * 1000)
         return sdf.format(dateFormat)
     }
 
+    /**
+     * load drawable icon from iconValue in api response
+     */
     private fun loadWeatherIcon(iconValue: String): Int { //TODO belongs in extension functions class
         var res: Int = -1
         res = when(iconValue) {
@@ -119,7 +126,10 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
         return res
     }
 
-    fun expandAction(view: View): Animation {
+    /**
+     * expand recycler view item animation
+     */
+    fun expand(view: View): Animation {
         view.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         val actualheight = view.measuredHeight
         view.layoutParams.height = 0
@@ -136,6 +146,9 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
         return animation
     }
 
+    /**
+     * collapse recycler view item animation
+     */
     fun collapse(view: View) {
         val actualHeight = view.measuredHeight
         val animation: Animation = object : Animation() {
@@ -153,6 +166,10 @@ class ForecastAdapter(var forecasts: List<DailyForecast>): RecyclerView.Adapter<
         view.startAnimation(animation)
     }
 
+    /**
+     * @param degrees from api response
+     * returns direction based on relative degree measurement from 0 to 360
+     */
     private fun getDirectionFromDegrees(degrees: Double): String {
         var direction: String = ""
         when {

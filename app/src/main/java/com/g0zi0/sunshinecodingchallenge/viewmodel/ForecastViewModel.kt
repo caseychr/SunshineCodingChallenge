@@ -15,10 +15,20 @@ class ForecastViewModel(application: Application): BaseViewModel(application) {
     val currentWeatherLiveData = MutableLiveData<Resource<CurrentWeather>>()
     val forecastsLiveData = MutableLiveData<Resource<Forecasts>>()
 
+    /**
+     * @param lat
+     * @param lon
+     * Live data observable that receives [CurrentWeather] from repository
+     */
     fun getCurrentWeather(lat: String, lon: String) {
         currentWeatherLiveData.loadResource { repository.getCurrentWeather(lat, lon) }
     }
 
+    /**
+     * @param lat
+     * @param lon
+     * Live data observable that receives [Forecasts] from repository
+     */
     fun getForecasts(lat: String, lon: String) {
         forecastsLiveData.loadResource { repository.getForecasts(lat, lon) }
     }

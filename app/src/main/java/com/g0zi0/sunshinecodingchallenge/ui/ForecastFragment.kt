@@ -40,24 +40,19 @@ class ForecastFragment: Fragment() {
     lateinit var feelsLikeTextView: TextView
     lateinit var recyclerView: RecyclerView
     lateinit var refreshImageView: ImageView
-    lateinit var toolbar: Toolbar
 
-    private val locationRequestCode = 1000
-
+    // fetching location services
     lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel by viewModels<ForecastViewModel>()
     private lateinit var forecastAdapter: ForecastAdapter
 
-    lateinit var sView: View
-
+    private val locationRequestCode = 1000
     var wayLatitude = 0.0
     var wayLongitude = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-   //     (activity as ForecastActivity).supportActionBar?.show()
-     //   (activity as ForecastActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@ForecastFragment.requireContext())
         checkPerms()
     }
@@ -67,16 +62,11 @@ class ForecastFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sView = inflater.inflate(R.layout.fragment_forecast, container, false)
-    //    toolbar = activity?.findViewById(R.id.toolbar)!!//sView.findViewById(R.id.toolbar)
-   //     (activity as ForecastActivity).supportActionBar?.customView
-      //  (activity as ForecastActivity).setSupportActionBar(toolbar)
-        return sView//inflater.inflate(R.layout.fragment_forecast, container, false)
+        return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //toolbar = view.findViewById(R.id.toolbar)
         cityTextView = view.findViewById(R.id.cityTextView)
         weatherImageView = view.findViewById(R.id.weatherImageView)
         weatherTextView = view.findViewById(R.id.weatherTextView)
@@ -87,46 +77,50 @@ class ForecastFragment: Fragment() {
         onSubscribe()
     }
 
+    /**
+     * register observers with livedata objects
+     */
     private fun onSubscribe() {
         viewModel.apply {
-            forecastsLiveData.observe(
-                viewLifecycleOwner, ResourceViewObserver(
-                    getForecastWeatherResourceView
-                )
-            )
-            currentWeatherLiveData.observe(
-                viewLifecycleOwner, ResourceViewObserver(
-                    getCurrentWeatherResourceView
-                )
-            )
+            forecastsLiveData.observe(viewLifecycleOwner, ResourceViewObserver(getForecastWeatherResourceView))
+            currentWeatherLiveData.observe(viewLifecycleOwner, ResourceViewObserver(getCurrentWeatherResourceView))
         }
     }
 
+    /**
+     * currentWeatherLiveData observables
+     */
     private val getCurrentWeatherResourceView = object : Resource.ResourceView<CurrentWeather> {
-        override fun showData(data: CurrentWeather) {
-            initCurrentWeatherView(data)
-        }
-
+        override fun showData(data: CurrentWeather) { initCurrentWeatherView(data) }
         override fun showLoading(isLoading: Boolean) { /** Do nothing */ }
         override fun showError(throwable: Throwable) { handleError(throwable) }
     }
 
+    /**
+     * forecastsLiveData observables
+     */
     private val getForecastWeatherResourceView = object : Resource.ResourceView<Forecasts> {
         override fun showData(data: Forecasts) {
             viewModel.getCurrentWeather(wayLatitude.toString(), wayLongitude.toString())
-            cityTextView.text = data.city.name
+            cityTextView.text = data.city.name // setting city text here since city data comes in this response
             initRecyclerView(data.dailyForecast)
         }
         override fun showLoading(isLoading: Boolean) { /** Do nothing */ }
         override fun showError(throwable: Throwable) { handleError(throwable) }
     }
 
+    /**
+     * create recyclerview adapter and feed in onSuccess data list
+     */
     private fun initRecyclerView(forecasts: List<DailyForecast>) {
         forecastAdapter = ForecastAdapter(forecasts)
         recyclerView.layoutManager = LinearLayoutManager(this@ForecastFragment.context)
         recyclerView.adapter = forecastAdapter
     }
 
+    /**
+     * set widgets to onSuccess data and fade in animation
+     */
     private fun initCurrentWeatherView(currentWeather: CurrentWeather) {
         cityTextView.fadeInText()
         weatherImageView.fadeInText()
@@ -143,6 +137,7 @@ class ForecastFragment: Fragment() {
             R.string.feelsLikeCurrentWeatherDegree,
             currentWeather.main.feelsLike.toInt().toString()
         )
+        // refresh button
         refreshImageView.setOnClickListener {
             refreshImageView.rotateButton()
             viewModel.getCurrentWeather(wayLatitude.toString(), wayLongitude.toString())
@@ -154,8 +149,10 @@ class ForecastFragment: Fragment() {
         Snackbar.make(this.requireView(), error.message.toString(), Snackbar.LENGTH_SHORT).show()
     }
 
-
-    fun loadWeatherIcon(iconValue: String): Int { //TODO belongs in extension functions class
+    /**
+     * load drawable icon from iconValue in api response
+     */
+    fun loadWeatherIcon(iconValue: String): Int {
         var res: Int = -1
         res = when(iconValue) {
             "01d" -> R.drawable.ic_weather_sunny_white
@@ -188,7 +185,7 @@ class ForecastFragment: Fragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            1000 -> {
+            locationRequestCode -> {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty()
@@ -206,10 +203,8 @@ class ForecastFragment: Fragment() {
                     }
                     fusedLocationClient.lastLocation.addOnSuccessListener((activity as ForecastActivity)) { location ->
                         if (location != null) {
-                            wayLatitude = location.getLatitude()
-                            wayLongitude = location.getLongitude()
-                            Toast.makeText(this@ForecastFragment.requireContext(), "${wayLatitude}, ${wayLongitude}", Toast.LENGTH_SHORT).show()
-                            //viewModel.getCurrentWeather(wayLatitude.toString(), wayLongitude.toString())
+                            wayLatitude = location.latitude
+                            wayLongitude = location.longitude
                             viewModel.getForecasts(wayLatitude.toString(), wayLongitude.toString())
                         }
                     }

@@ -16,14 +16,28 @@ class Repository(val context: Context, private val weatherApi: WeatherApi,
         sharedPreferences.edit().putString(units, "imperial").apply()
     }
 
+    /**
+     * Fetches forecasts for [lat] [lon] location
+     */
     suspend fun getForecasts(lat: String, lon: String): Resource<Forecasts> {
         return loadApiResource { weatherApi.getForecasts(lat, lon, 10, sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
     }
 
+    /**
+     * Fetches currentWeather for [lat] [lon] location.
+     * [Units] set to imperial and [apikey] retrieved from shared prefs
+     */
     suspend fun getCurrentWeather(lat: String, lon: String): Resource<CurrentWeather> {
         return loadApiResource { weatherApi.getCurrentWeather(lat, lon, sharedPreferences.getString("units", "").toString(), sharedPreferences.getString("apiKey", "").toString()) }
     }
 
+    /**
+     * Runs a suspended loader function which should return [T], this will await for the result
+     * of [T] and return the result in a wrapped [Resource] of [T]. The [Resource] will
+     * either be a [Resource.Success] if the loading was successful a [Resource.NotFound] if the
+     * loading failed due to the resource not existing or [Resource.Error] if there was a error while
+     * trying to load [T].
+     */
     suspend fun <T> loadApiResource(loader: suspend () -> T): Resource<T> {
         return try {
             Resource.Success((loader()))
