@@ -8,7 +8,7 @@ import com.g0zi0.sunshinecodingchallenge.api.WeatherApi
 import com.g0zi0.sunshinecodingchallenge.model.CurrentWeather
 import com.g0zi0.sunshinecodingchallenge.model.Forecasts
 
-class Repository(val context: Context, private val weatherApi: WeatherApi,
+class Repository(val context: Context, val weatherApi: WeatherApi,
                  val sharedPreferences: SharedPreferences = context.getSharedPreferences("com.g0zi0.sunshinecodingchallenge_preferences", Context.MODE_PRIVATE)) {
 
     init {
